@@ -32,10 +32,21 @@ function ListBookComponent() {
 
 
   const addNewBook = (newBook) => {
-    newBook.id = Books.length > 0 ? Books[Books.length - 1].id + 1 : 1;
+    if (Books.length > 0) {
+      newBook.id = Books[Books.length - 1].id + 1;
+    } else {
+      newBook.id = 1;
+    }    
     setBooks([...Books, newBook]);
     setAction("");
   };
+
+  const DeleteBook = (id) => {
+    const bookToDelete = Books.find((book) => book.id === id);
+    if (bookToDelete && window.confirm(`Êtes-vous sûr de vouloir supprimer le livre "${bookToDelete.titre}" ?`)) {
+        setBooks(Books.filter((book) => book.id !== id));
+    }
+};
 
   
   return (
@@ -77,7 +88,7 @@ function ListBookComponent() {
 
               </td>
               <td>
-                <button className="ui red button">Supprimer</button>
+                <button className="ui red button"  onClick={() => DeleteBook(book.id)}>Supprimer</button>
               </td>
             </tr>
           ))}
